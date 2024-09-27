@@ -1,0 +1,54 @@
+<div class="feedback-form">
+  <h2>Student Feedback Form</h2>
+  <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
+    <div>
+      <label for="name">Student Name:</label>
+      <input id="name" formControlName="name" />
+      <div *ngIf="feedbackForm.get('name')?.invalid && feedbackForm.get('name')?.touched" class="validation-message">
+        Name is required.
+      </div>
+    </div>
+
+    <div>
+      <label for="batch">Batch Number:</label>
+      <input id="batch" type="number" formControlName="batch" />
+      <div *ngIf="feedbackForm.get('batch')?.invalid && feedbackForm.get('batch')?.touched" class="validation-message">
+        Batch number must be a positive number.
+      </div>
+    </div>
+
+    <div>
+      <label for="feedback">Feedback:</label>
+      <textarea id="feedback" formControlName="feedbackText"></textarea>
+      <div *ngIf="feedbackForm.get('feedbackText')?.invalid && feedbackForm.get('feedbackText')?.touched" class="validation-message">
+        Feedback is required.
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="feedbackForm.invalid">{{ isEditing ? 'Update Feedback' : 'Submit Feedback' }}</button>
+    <button type="button" (click)="clearForm()">Clear</button>
+  </form>
+
+  <h3>Submitted Feedback</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Student Name</th>
+        <th>Batch Number</th>
+        <th>Feedback</th>
+        <th>Actions</th> <!-- New Actions column -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let feedback of feedbackList; let i = index">
+        <td>{{ feedback.name }}</td>
+        <td>{{ feedback.batch }}</td>
+        <td>{{ feedback.feedbackText }}</td>
+        <td>
+          <button (click)="editFeedback(i)">Edit</button> <!-- Edit button -->
+          <button (click)="deleteFeedback(i)">Delete</button> <!-- Optional Delete button -->
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
